@@ -12,7 +12,9 @@ class StudentController extends Controller
     {
         return inertia(
             'Student/Index',
-            ['students' => StudentResource::collection(Student::all())]
+            [
+                'students' => StudentResource::collection(Student::paginate(10))
+            ]
         );
     }
 }
