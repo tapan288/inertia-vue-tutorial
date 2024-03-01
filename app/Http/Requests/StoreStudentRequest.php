@@ -28,4 +28,14 @@ class StoreStudentRequest extends FormRequest
             'section_id' => ['required', 'exists:sections,id'],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'name',
+            'email' => 'email',
+            'class_id' => 'class',
+            'section_id' => 'section',
+        ];
+    }
 }
