@@ -1,6 +1,9 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import { watch, ref } from "vue";
+
+import axios from "axios";
 
 defineProps({
     classes: {
@@ -8,12 +11,27 @@ defineProps({
     },
 });
 
+let sections = ref({});
+
 const form = useForm({
     name: "",
     email: "",
     class_id: "",
     section_id: "",
 });
+
+watch(
+    () => form.class_id,
+    (newValue) => {
+        getSections(newValue);
+    }
+);
+
+const getSections = (class_id) => {
+    axios.get("/api/sections?class_id=" + class_id).then((response) => {
+        sections.value = response.data;
+    });
+};
 </script>
 
 <template>
@@ -113,7 +131,12 @@ const form = useForm({
                                             <option value="">
                                                 Select a Section
                                             </option>
-                                            <option value="1">Section A</option>
+                                            <option
+                                                v-for="section in sections.data"
+                                                :value="section.id"
+                                            >
+                                                {{ section.name }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
