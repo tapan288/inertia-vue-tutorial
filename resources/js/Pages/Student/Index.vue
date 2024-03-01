@@ -108,7 +108,7 @@ defineProps({
                                         class="divide-y divide-gray-200 bg-white"
                                     >
                                         <tr
-                                            v-for="student in students"
+                                            v-for="student in students.data"
                                             :key="student.id"
                                         >
                                             <td
@@ -129,17 +129,19 @@ defineProps({
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                                             >
-                                                Class 1
+                                                {{ student.class.name }}
                                             </td>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                                             >
-                                                Section A
+                                                {{ student.section.name }}
                                             </td>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                                             >
-                                                2 days ago
+                                                {{
+                                                    student.created_at_formatted
+                                                }}
                                             </td>
 
                                             <td
