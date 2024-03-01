@@ -2,13 +2,23 @@
 import MagnifyingGlass from "@/Components/Icons/MagnifyingGlass.vue";
 import Pagination from "@/Components/Pagination.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps({
     students: {
         type: Object,
     },
 });
+
+const deleteForm = useForm({});
+
+const deleteStudent = (id) => {
+    if (confirm("Are you sure you want to delete this student?")) {
+        deleteForm.delete(route("students.destroy", id), {
+            preserveScroll: true,
+        });
+    }
+};
 </script>
 
 <template>
@@ -172,6 +182,11 @@ defineProps({
                                                         Edit
                                                     </Link>
                                                     <button
+                                                        @click="
+                                                            deleteStudent(
+                                                                student.id
+                                                            )
+                                                        "
                                                         class="ml-2 text-indigo-600 hover:text-indigo-900"
                                                     >
                                                         Delete
