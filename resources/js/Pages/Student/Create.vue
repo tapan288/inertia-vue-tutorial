@@ -1,6 +1,19 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
+
+defineProps({
+    classes: {
+        type: Object,
+    },
+});
+
+const form = useForm({
+    name: "",
+    email: "",
+    class_id: "",
+    section_id: "",
+});
 </script>
 
 <template>
@@ -37,6 +50,7 @@ import { Head, Link } from "@inertiajs/vue3";
                                             >Name</label
                                         >
                                         <input
+                                            v-model="form.name"
                                             type="text"
                                             id="name"
                                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('name') text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300 @enderror"
@@ -53,6 +67,7 @@ import { Head, Link } from "@inertiajs/vue3";
                                             >Email Address</label
                                         >
                                         <input
+                                            v-model="form.email"
                                             type="email"
                                             id="email"
                                             autocomplete="email"
@@ -67,13 +82,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                             >Class</label
                                         >
                                         <select
+                                            v-model="form.class_id"
                                             id="class_id"
                                             class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('class_id') text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300 @enderror"
                                         >
                                             <option value="">
                                                 Select a Class
                                             </option>
-                                            <option value="">Class 1</option>
+                                            <option
+                                                v-for="item in classes.data"
+                                                :key="item.id"
+                                                :value="item.id"
+                                            >
+                                                {{ item.name }}
+                                            </option>
                                         </select>
                                     </div>
 
@@ -84,6 +106,7 @@ import { Head, Link } from "@inertiajs/vue3";
                                             >Section</label
                                         >
                                         <select
+                                            v-model="form.section_id"
                                             id="section_id"
                                             class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('section_id') text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300 @enderror"
                                         >
