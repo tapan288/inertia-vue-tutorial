@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
-import { watch, ref } from "vue";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { watch, ref, onMounted } from "vue";
 import axios from "axios";
 import InputError from "@/Components/InputError.vue";
 
@@ -12,12 +12,13 @@ defineProps({
 });
 
 let sections = ref({});
+const student = usePage().props.student;
 
 const form = useForm({
-    name: "",
-    email: "",
-    class_id: "",
-    section_id: "",
+    name: student.data.name,
+    email: student.data.email,
+    class_id: student.data.class_id,
+    section_id: student.data.section_id,
 });
 
 watch(
@@ -27,6 +28,10 @@ watch(
     }
 );
 
+onMounted(() => {
+    getSections(student.data.class_id);
+});
+
 const getSections = (class_id) => {
     axios.get("/api/sections?class_id=" + class_id).then((response) => {
         sections.value = response.data;
@@ -34,7 +39,7 @@ const getSections = (class_id) => {
 };
 
 const submit = () => {
-    form.post(route("students.store"), {
+    form.put(route("students.update", student.data.id), {
         preserveScroll: true,
     });
 };
@@ -189,7 +194,7 @@ const submit = () => {
                                     type="submit"
                                     class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
-                                    Save
+                                    Update
                                 </button>
                             </div>
                         </div>
