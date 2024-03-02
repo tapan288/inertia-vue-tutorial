@@ -5,6 +5,10 @@ defineProps({
     data: {
         type: Object,
     },
+    pageNumberUpdated: {
+        type: Function,
+        required: true,
+    },
 });
 
 const updatePageNumber = (link) => {
@@ -58,7 +62,7 @@ const updatePageNumber = (link) => {
                                 <button
                                     v-for="(link, index) in data.meta.links"
                                     :key="index"
-                                    @click.prevent="updatePageNumber(link)"
+                                    @click.prevent="pageNumberUpdated(link)"
                                     :disabled="link.active || !link.url"
                                     class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                                     :class="{

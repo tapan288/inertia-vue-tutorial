@@ -14,6 +14,10 @@ defineProps({
 let pageNumber = ref(1),
     searchTerm = ref(usePage().props.search ?? "");
 
+const pageNumberUpdated = (link) => {
+    pageNumber.value = link.url.split("=")[1];
+};
+
 let studentsUrl = computed(() => {
     const url = new URL(route("students.index"));
 
@@ -224,7 +228,10 @@ const deleteStudent = (id) => {
                                         </tbody>
                                     </table>
                                 </div>
-                                <Pagination :data="students" />
+                                <Pagination
+                                    :data="students"
+                                    :pageNumberUpdated="pageNumberUpdated"
+                                />
                             </div>
                         </div>
                     </div>
