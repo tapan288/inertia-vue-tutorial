@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Resources\ClassResource;
 use App\Http\Resources\StudentResource;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 
@@ -14,9 +15,23 @@ class StudentController extends Controller
 {
     public function index()
     {
+        $studentQuery = Student::query();
+
+        $studentQuery = $this->applySearch($studentQuery, request('search'));
+
         return inertia('Student/Index', [
-            'students' => StudentResource::collection(Student::paginate(10))
+            'students' => StudentResource::collection(
+                $studentQuery->paginate(5)
+            ),
+            'search' => request('search') ?? ''
         ]);
+    }
+
+    protected function applySearch(Builder $query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        });
     }
 
     public function create()

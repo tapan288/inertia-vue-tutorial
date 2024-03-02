@@ -56,8 +56,8 @@ const updatePageNumber = (link) => {
                                 aria-label="Pagination"
                             >
                                 <button
-                                    v-for="link in data.meta.links"
-                                    :key="link.url"
+                                    v-for="(link, index) in data.meta.links"
+                                    :key="index"
                                     @click.prevent="updatePageNumber(link)"
                                     :disabled="link.active || !link.url"
                                     class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
