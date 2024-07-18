@@ -13,16 +13,16 @@ use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $studentQuery = Student::query();
-
-        $studentQuery = $this->applySearch($studentQuery, request('search'));
+        $studentQuery = Student::search($request);
+        $classes = ClassResource::collection(Classes::all());
 
         return inertia('Student/Index', [
             'students' => StudentResource::collection(
                 $studentQuery->paginate(5)
             ),
+            'classes' => $classes,
             'search' => request('search') ?? ''
         ]);
     }
